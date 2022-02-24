@@ -1,0 +1,12 @@
+.idea/
+.codelite/
+node_modules/
+.history
+package-lock.json
+rayan bors.rar
+rayan/
+logs
+.vscode
+services/partdcExchangeCodal@latest/.env
+archive
+services/partdcExchangeCodal@latest/test/test

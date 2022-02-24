@@ -1,0 +1,11 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/
+.git/
+.vscode/
+logs/
+public
+node_modules/
+apps
+/**/package-lock.json
+test/
+services/partdcExchangeCodal@latest/docs

@@ -1,0 +1,327 @@
+
+<h1 id='sector_1' class='toc-header'> <a class='toc-anchor' href='#sector_1'>¶</a>معرفی</h1>
+<p>این سرویس اطلاعیه های منتشر شده سازمان بورس و اوراق بهادار را با استفاده از سرویس های رایان بورس دریافت کرده و به همراه محتویات آن ها در فرمت های pdf json xlsx html xbrl در پایگاه داده ذخیره میکند.</p>
+<p>از لیست اطلاعیه ها و محتوای آن ها در اپلیکیشن و وب سایت سیگنال استفاده میشود.</p>
+
+<h1 id='sector_2' class='toc-header'> <a class='toc-anchor' href='#sector_2'>¶</a><strong>دریافت لیست اطلاعیه ها statements</strong></h1>
+<p>این سرویس با فراخوانی api های خریداری شده از شرکت رایان بورس در بازه زمانی تعیین شده اطلاعیه های منتشر شده در کدال را دریافت و در پایگاه داده ذخیره سازی میکند.</p>
+<p>طبق بررسی های انجام شده با مسيول مستقیم سامانه کدال در شرکت تاریخ شروع به کار و انتشار اطلاعیه ها در سامانه کدال از تاریخ1386/07/08 میباشد .</p>
+<p>روند کار به این شکل است که با هر بار فراخوانی سرویس اخرین داده موجود درپایگاه داده بررسی شده و از ان روز به بعد اطلاعیه ها دریافت میگردند</p>
+<p>با توجه به محدودیت تعداد درخواست های ارسالی به api شرکت رایان بورس در ساعاتی از روز حجم درخواست ها را افزایش داده و در ساعاتی از روز تعداد درخواست ها را کاهش میدهیم</p>
+<h2 id='sector_3' class='toc-header'> <a class='toc-anchor' href='#sector_3'>¶</a>نحوه فراخوانی</h2>
+<div class="sourceCode" id="cb1"><pre style="background-color:#e3f2fd !important;text-shadow: none !important;border-left:6px solid;  border-color: #0d47a1;direction:ltr"><code style="background-color:#e3f2fd !important;color:#0d47a1 !important;text-shadow: none !important;"><span id="cb1-1"><a href="#cb1-1"></a>partdcexchangecodal<span class="op">-</span><span class="va">prod</span>.<span class="va">partdp</span>.<span class="at">ir</span><span class="op">/</span>service<span class="op">/</span>partdcExchangeCodal@latest<span class="op">/</span>statements<span class="op">?</span>year<span class="op">={</span>year<span class="op">}&amp;</span>month<span class="op">={</span>month<span class="op">}&amp;</span>day<span class="op">={</span>day<span class="op">}</span></span></code></pre></div>
+<h2 id='sector_4' class='toc-header'> <a class='toc-anchor' href='#sector_4'>¶</a>ورودی ها</h2>
+<dl>
+    <dt></dt>
+    <dd>year: تاریخ سال
+    </dd>
+    <dd>month: تاریخ ماه
+    </dd>
+    <dd>day: تاریخ روز
+    </dd>
+</dl>
+<p>در ورودی این سرویس در صورت وارد نکردن تاریخ ،این سرویس اطلاعیه ها را از تاریخ اخرین اطلاعیه موجود در پایگاه داده تا روز جاری دریافت خواهد کرد.</p>
+<h2 id='sector_5' class='toc-header'> <a class='toc-anchor' href='#sector_5'>¶</a>پردازش های انجام شده بر داده اصلی</h2>
+<ol>
+    <li>فیلتر کردن دده های دریافتی جدید از داده هایی که قبلا در پایگاه داده ذخیره شده است .</li>
+    <li>اضافه کردن فیلد نام فینگلیش نماد در اطلاعات اطلاعیه ها</li>
+</ol>
+<h2 id='sector_6' class='toc-header'> <a class='toc-anchor' href='#sector_6'>¶</a>ذخیره سازی در دیتابیس</h2>
+
+<pre class="green-pre">
+<code class="green-code">
+{
+"_id" : ObjectId("5da16a41d09f03a96504dd7c"),
+"tracingNo" : 575716,
+"data" : {
+"symbol" : "غدام",
+"letterSymbol" : "غدام",
+"tracingNo" : 575716,
+"parentTracingNo" : 535466,
+"title" : "زمانبندی پرداخت سود دوره 12 ماهه منتهی به 1397/09/30(اصلاحیه)",
+"registerDatetime" : "1398/07/20 08:33:40",
+"sentDateTime" : "1398/07/20 08:40:24",
+"publishDateTime" : "1398/07/20 08:40:24",
+"letterCode" : "ن-13",
+"reportingType" : 1000000,
+"letterName" : "زمانبندی پرداخت سود",
+"letterType" : 30,
+"letterKind" : 1,
+"isAudited" : false,
+"isConsolidated" : false,
+"period" : 12,
+"periodExtraDay" : 0,
+"periodEndToDate" : "1397/09/30",
+"yearEndToDate" : "1397/09/30",
+"hasAttachment" : true,
+"companyType" : 0,
+"companyName" : "خوراک دام پارس",
+"companyState" : 0,
+"htmlUrl" : "",
+"pdfUrl" : "",
+"excelUrl" : "",
+"xbrlUrl" : "",
+"attachmentUrl" : "https://codal.ir/Reports/Attachment.aspx?LetterSerial=is9NEoCw1Bwre3C8OVIVNQ%3d%3d",
+"contentUri" : "",
+"companyId" : 1965,
+"auditorId" : 1177
+},
+"date" : "13980720",
+"finglishSymbol" : "ghdam",
+"hasInfo" : "noInfo",
+"letterType" : 30,
+"period" : 12
+}
+</code>
+</pre>
+
+<h1 id='sector_7' class='toc-header'> <a class='toc-anchor' href='#sector_7'>¶</a><strong>دریافت محتوا اطلاعیه ها getStatementsInfo</strong></h1>
+<p>دریافت محتویات جیسون اطلاعیه های منتشر شده در سامانه کدال</p>
+<p>
+    یرای فراخوانی این سرویس به ازای هر اطلاعیه لینک منحصر به فردی در دیتابیس موجود میباشد که با فراخوانی این لینک از api های شرکت رایان بورس جزعیات اطلاعیه در قالب فایل جیسون برگردانده میشود.
+</p>
+<h2 id='sector_8' class='toc-header'> <a class='toc-anchor' href='#sector_8'>¶</a>نحوه فراخوانی</h2>
+<div class="sourceCode" id="cb3"><pre style="background-color:#e3f2fd !important;text-shadow: none !important;border-left:6px solid;  border-color: #0d47a1;direction:ltr"><code style="background-color:#e3f2fd !important;color:#0d47a1 !important;text-shadow: none !important;"><span id="cb3-1"><a href="#cb3-1"></a>partdcexchangecodal<span class="op">-</span><span class="va">prod</span>.<span class="va">partdp</span>.<span class="at">ir</span><span class="op">/</span>service<span class="op">/</span>partdcExchangeCodal@latest<span class="op">/</span>getStatementsInfo<span class="op">?</span>startDate<span class="op">={</span>startDate<span class="op">}&amp;</span>endDate<span class="op">={</span>endDate<span class="op">}&amp;</span>symbol<span class="op">={</span>symbol<span class="op">}&amp;</span>letterType<span class="op">={</span>letterType<span class="op">}&amp;</span>tracingNo<span class="op">={</span>tracingNo<span class="op">}</span> </span></code></pre></div>
+<h2 id='sector_9' class='toc-header'> <a class='toc-anchor' href='#sector_9'>¶</a>ورودی ها</h2>
+<dl>
+    <dt></dt>
+    <dd>symbol: نام نماد
+    </dd>
+    <dd>tracingNo: شماره پیگیری
+    </dd>
+    <dd>letterType: نوع اطلاعیه
+    </dd>
+    <dd>endDate: تاریخ پایان انتشار اطلاعیه
+    </dd>
+    <dd>startDate: تاریخ شروع انتشار اطلاعیه
+    </dd>
+</dl>
+<p>در ورودی این سرویس در صورت وارد کردن شماره پیگیری ، وروردی دیگر فیلد ها نادیده گرفته میشود و فقط محتوا اطلاعیه مربوط به همان شماره پیگیری دریافت میشود .</p>
+<h2 id='sector_10' class='toc-header'> <a class='toc-anchor' href='#sector_10'>¶</a>پردازش های انجام شده بر داده اصلی</h2>
+<p>در این سرویس داده ها بدون هیچ تغییری در پایگاه داده ذخیره میشوند .</p>
+<h2 id='sector_11' class='toc-header'> <a class='toc-anchor' href='#sector_11'>¶</a>ذخیره سازی در دیتابیس</h2>
+<p>محتویات اطلاعیه ها ی مختلف در این سرویس متفاوت میباشد .</p>
+<h1 id='sector_12' class='toc-header'> <a class='toc-anchor' href='#sector_12'>¶</a><strong>دریافت لیست انواع اطلاعیه ها getCodalStatementsLetterType</strong></h1>
+<p>دریافت لیست انواع اطلاعیه های منتشر شده در سامانه کدال</p>
+<h2 id='sector_13' class='toc-header'> <a class='toc-anchor' href='#sector_13'>¶</a>نحوه فراخوانی</h2>
+<div class="sourceCode" id="cb4"><pre style="background-color:#e3f2fd !important;text-shadow: none !important;border-left:6px solid;  border-color: #0d47a1;direction:ltr"><code style="background-color:#e3f2fd !important;color:#0d47a1 !important;text-shadow: none !important;"><span id="cb4-1"><a href="#cb4-1"></a>partdcexchangecodal<span class="op">-</span><span class="va">prod</span>.<span class="va">partdp</span>.<span class="at">ir</span><span class="op">/</span>service<span class="op">/</span>partdcExchangeCodal@latest<span class="op">/</span>getCodalStatementsLetterType</span></code></pre></div>
+<h2 id='sector_14' class='toc-header'> <a class='toc-anchor' href='#sector_14'>¶</a>ورودی ها</h2>
+<p>این سرویس دارای ورودی نمیباشد .</p>
+<h2 id='sector_15' class='toc-header'> <a class='toc-anchor' href='#sector_15'>¶</a>پردازش های انجام شده بر داده اصلی</h2>
+<ol>
+    <li>نام کلید name به نام کلید title تغییر میکند.</li>
+</ol>
+<h2 id='sector_16' class='toc-header'> <a class='toc-anchor' href='#sector_16'>¶</a>ذخیره سازی در دیتابیس</h2>
+
+<pre class="green-pre">
+<code class="green-code">
+{
+    "letterType" : "156",
+    "letterTitle" : "برنامه ناشر جهت خروج از شمولیت ماده 141 لایحه قانونی اصلاحی قسمتی از قانون تجارت"
+},
+</code>
+</pre>
+
+<span id="cb5-2"><a href="#cb5-2"></a>    <span class="dt">&quot;letterType&quot;</span> <span class="fu">:</span> <span class="st">&quot;156&quot;</span><span class="fu">,</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>    <span class="dt">&quot;letterTitle&quot;</span> <span class="fu">:</span> <span class="st">&quot;برنامه ناشر جهت خروج از شمولیت ماده 141 لایحه قانونی اصلاحی قسمتی از قانون تجارت&quot;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">}</span><span class="er">,</span></span></code></pre></div>
+
+<h1>
+    دریافت کلید های جست و جو crawlStatementsSearchItems
+</h1>
+<p>
+    دریافت برخی کلید های جست و جو دارای api رسمی از شرکت رایان بورس نمیباشد.
+    دریافت این کلید های جست و جو از جمله وضعیت اطلاعیه ها ، دسته بندی کلی شرکت ها ، نوع شرکت و  وضعیت پذیرش شرکت  با استقاده از crawl میباشد.
+    مرجع دریافت این اطلاعات سایت رسمی شرکت رایان بورس و در قسمت help آن میباشد.
+    آدرس صفحه ی help سایت رایان بورس:
+    https://help.rbcapi.ir/
+</p>
+<h3>نحوه ی فراخوانی</h3>
+<pre class="blue-pre">
+<code class="blue-code">
+<a>
+    partdcexchangecodal-prod.partdp.ir/service/partdcExchangeCodal@latest/crawlStatementsSearchItems
+</a>
+</code>
+</pre>
+<h3>
+    ورودی ها
+</h3>
+<p>
+    ندارد.
+</p>
+<h3>
+    پردازش های انجام شده بر داده اصلی
+</h3>
+<p>
+    تغییری در داده های دریافتی صورت نمیگیرد و در تمامی داده ها عنوان جست و جو با کلید title و مقدار جست و جو با کلید id ذخیره سازی میشوند.
+</p>
+<h3>
+    ذخیره سازی در دیتابیس
+</h3>
+
+<pre class="green-pre">
+<code class="green-code">
+{
+  "letterTypes": [
+    {
+      "id": 0,
+      "title": "نامه "
+    }
+    .
+    .
+    .
+    {
+      "id": 2222,
+      "title": "خلاصه تصميمات مجمع عمومي فوق‌العاده"
+    }
+  ],
+  "letterKinds": [
+    {
+      "id": "1",
+      "title": "اصلاحیه"
+    },
+    {
+      "id": "0",
+      "title": "اصل"
+    }
+  ],
+  "reportingTypes": [
+    {
+      "id": "1000000",
+      "title": "توليدي"
+    },
+    {
+      "id": "1000001",
+      "title": "ساختماني"
+    },
+    {
+      "id": "1000002",
+      "title": "سرمايه گذاري"
+    },
+    {
+      "id": "1000003",
+      "title": "بانکي"
+    },
+    {
+      "id": "1000004",
+      "title": "ليزينگي"
+    },
+    {
+      "id": "1000005",
+      "title": "خدماتي"
+    },
+    {
+      "id": "1000006",
+      "title": "بيمه اي"
+    },
+    {
+      "id": "1000007",
+      "title": "حمل و نقل دريايي"
+    }
+  ],
+  "companyTypes": [
+    {
+      "id": "0",
+      "title": "غیر از نهاد های مالی"
+    },
+    {
+      "id": "14",
+      "title": "کارگزاران"
+    }
+  ],
+  "companyStates": [
+    {
+      "id": "0",
+      "title": "پذیرفته شده در بورس تهران"
+    },
+    {
+      "id": "1",
+      "title": "پذیرفته شده در فرابورس ایران"
+    },
+    {
+      "id": "2",
+      "title": "ثبت شده پذیرفته نشده"
+    },
+    {
+      "id": "3",
+      "title": "ثبت نشده نزد سازمان"
+    },
+    {
+      "id": "4",
+      "title": "پذیرفته شده در بورس کالای ایران"
+    },
+    {
+      "id": "5",
+      "title": "پذیرفته شده دربورس انرژی ایران"
+    }
+  ],
+  "companyIds": [
+    {
+      "id": 1002,
+      "title": "بیمه آرمان"
+    }
+    .
+    .
+    .
+    {
+      "id": 7705,
+      "title": "شرکت شیمی دارو کوثر(سهامی خاص)"
+    }
+  ]
+}
+</code>
+</pre>
+
+
+<h1>
+    دریافت کلید های جست و جو شناسه شرکت ها statementsCompanyIds
+</h1>
+<p>
+    این سرویس نام شرکت ها را به همراه شناسه آن ها در دیتابیس ذخیره میکند.
+    این سرویس دارای api رسمی شرکت رایان بورس نمیباشد.
+    بدین منظور با پیمایش پایگاه داده نام شرکت ها و شناسه ان ها را دریافت و در جدولی جداگانه ذخیره میکنیم.
+</p>
+<h3>نحوه ی فراخوانی</h3>
+<pre class="blue-pre">
+<code class="blue-code">
+<a>
+    partdcexchangecodal-prod.partdp.ir/service/partdcExchangeCodal@latest/statementsCompanyIds
+</a>
+</code>
+</pre>
+<h3>
+    ورودی ها
+</h3>
+<p>
+    ندارد .
+</p>
+<h3>
+    پردازش های انجام شده بر داده اصلی
+</h3>
+<p>
+    در این سرویس نام شرکت ها با کلید title و شناسه شرکت با کلید id ذخیره میشود .
+</p>
+<h3>
+    ذخیره سازی در دیتابیس
+</h3>
+
+<pre class="green-pre">
+<code class="green-code">
+[
+  {
+    "id": 1002,
+    "title": "بیمه آرمان"
+  },
+  {
+    "id": 1004,
+    "title": "سرمایه گذاری پارس آریان"
+  },
+  {
+    "id": 7705,
+    "title": "شرکت شیمی دارو کوثر(سهامی خاص)"
+  }
+]
+</code>
+</pre>
+

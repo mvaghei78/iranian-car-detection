@@ -1,0 +1,98 @@
+{
+    "env": {
+        "es6": true,
+        "node": true,
+        "mocha": true
+    },
+    "rules": {
+        "no-prototype-builtins": [
+            "off"
+        ],
+        "require-atomic-updates": [
+            "off"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "indent": [
+            "warn",
+            2,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "quotes": [
+            "error",
+            "single",
+            {
+                "allowTemplateLiterals": true
+            }
+        ],
+        "one-var": [
+            "error",
+            "never"
+        ],
+        "no-console": [
+            "off"
+        ],
+        "brace-style": [
+            "error",
+            "stroustrup",
+            {
+                "allowSingleLine": false
+            }
+        ],
+        "no-debugger": [
+            "warn"
+        ],
+        "require-jsdoc": ["warn", {
+            "require": {
+                "FunctionDeclaration": true,
+                "MethodDefinition": true,
+                "ClassDeclaration": true,
+                "ArrowFunctionExpression": true,
+                "FunctionExpression": false
+            }
+        }],
+        "global-require": [
+            "warn"
+        ],
+        "linebreak-style": [
+            "warn",
+            "windows"
+        ],
+        "arrow-body-style": [
+            "warn",
+            "always"
+        ],
+        "handle-callback-err": [
+            "error",
+            "^.*(e|E)rr"
+        ],
+        "no-extra-boolean-cast": [
+            "off"
+        ],
+        "no-inner-declarations": [
+            "off"
+        ],
+        "no-irregular-whitespace": [
+            "off"
+        ],
+        "implicit-arrow-linebreak": [
+            "warn",
+            "beside"
+        ],
+        "no-template-curly-in-string": [
+            "error"
+        ]
+    },
+    "globals": {
+        "document": true,
+        "$": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 2018
+    }
+}

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: statementsCodal.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: statementsCodal.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ *@namespace StatementsCodal
+ */
+
+
+let {
+  BaseConfig,
+  BaseServiceClass
+} = require('partdcFramework');
+let async = require('async');
+let q = require('q');
+
+/**
+ * @class StatementsCodal
+ * @extends {BaseServiceClass}
+ */
+class StatementsCodal extends BaseServiceClass {
+
+
+  /**
+   *Creates an instance of ExampleService.
+   * @param {!string} serviceName نام سرويس
+   * @param {!string} serviceRedisKey نام منحصر به فرد سرويس جهت ذخيره سازي در رديس و عدم تکراري بودن فرايند اجراي ان
+   * @param {object} inputParam پارامترهاي دريافتي از کاربر
+   * @memberof  StatementsCodal
+   */
+  constructor(serviceName, serviceRedisKey, inputParam, serviceCallMethod) {
+    super(serviceName, serviceRedisKey, inputParam, serviceCallMethod);
+  }
+
+  /**
+   *@description بازنويسي تنظيمات مرتبط با رست
+   * @returns {!object} تنظیمات درخواست رست
+   * @memberof  StatementsCodal
+   */
+  getRestRequestOptions() {
+    let options = super.getRestRequestOptions();
+    let year = this.inputParam.year;
+    let month = this.inputParam.month;
+    let day = this.inputParam.day;
+    options.url =  BaseConfig.restConfig.address + '/statements' +  `?year=${year}&amp;month=${month}&amp;day=${day}`;
+    this.date = `${year}${month}${day}`;
+    return options;
+  }
+
+    /**
+   * @description جهت پردازش داده هاي دريافتي متد ذيل مي بايست پياده سازي شود
+   *
+   * @memberof  StatementsCodal
+   * @returns {void}
+   */
+  async processData() {
+    let serviceData = [];
+    let data = this.serviceData;
+    if (data.hasOwnProperty('Error')) {
+      this.logSystem.logClass.codalError= data;
+      throw Error(data);
+    }
+
+    else {
+      let date = `${this.inputParam.year}${this.inputParam.month}${this.inputParam.day}`;
+      let PreviousData = (await BaseConfig.mongoDBO.collection('CodalStatements').find({date: date}, {projection: {tracingNo: 1}}).toArray());
+      //compare data with existing tracingNo on mongo and filter data 
+      let filtered = data.filter(object => {
+        return (PreviousData.map(item => {
+          return item.tracingNo;
+        })).indexOf(object.tracingNo) === -1;
+      }
+      );
+
+      filtered.forEach((st) => {
+        let newData = {};
+        newData.data = st;
+        newData.finglishSymbol = finglishIt(st.symbol);
+        newData.date = st.publishDateTime.substring(0, 10).replace(/\//g, '');
+        newData.letterType = st.letterType;
+        newData.tracingNo = st.tracingNo;
+        newData.period = st.period;
+        serviceData.push(newData);
+      });
+      this.serviceData = serviceData;
+    }
+
+    function finglishIt(data) {
+      let result = data.replace(/،*\s/g, '')
+        .replace(/(-)/g, '')
+        .replace(/(\.)/g, '')
+        .replace(/(\+)/g, '')
+        .replace(/(?:\d)?\d+/g, '')
+        .replace(/(,)/g, '')
+        .replace(/(ّ)/g, '')
+        .replace(/(ِ)/g, '')
+        .replace(/(َ)/g, '')
+        .replace(/(ٍ)/g, '')
+        .replace(/(ء)/g, '')
+        .replace(/(ِ)/g, '')
+        .replace(/(ٌ)/g, '')
+        .replace(/(ـ)/g, '')
+        .replace(/(ُ)/g, '')
+        .replace(/(ْ)/g, '')
+        .replace(/(ً)/g, '')
+        .replace(/(\/)/g, '')
+        .replace(/(\\)/g, '')
+        .replace(/()/g, '')
+        .replace(/()/g, '')
+        .replace(/()/g, '')
+        .replace(/() /g, '')
+        .replace(/()/g, '')
+        .replace(/() /g, '')
+        .replace(/(")/g, '')
+        .replace(/(،)/g, '')
+        .replace(/(إٔ)/g, 'a')
+        .replace(/(اِ)/g, 'a')
+        .replace(/(ا)/g, 'a')
+        .replace(/(اِ)/g, 'a')
+        .replace(/(أ)/g, 'a')
+        .replace(/(إ)/g, 'a')
+        .replace(/(آ)/g, 'a')
+        .replace(/(ب)/g, 'b')
+        .replace(/(ت)/g, 't')
+        .replace(/(ث)/g, 's')
+        .replace(/(پ)/g, 'p')
+        .replace(/(ج)/g, 'j')
+        .replace(/(چ)/g, 'c')
+        .replace(/(ح)/g, 'h')
+        .replace(/(خ)/g, 'kh')
+        .replace(/(د)/g, 'd')
+        .replace(/(ذ)/g, 'z')
+        .replace(/(ر)/g, 'r')
+        .replace(/(ز)/g, 'z')
+        .replace(/(ژ)/g, 'zh')
+        .replace(/(س)/g, 's')
+        .replace(/(ش)/g, 'sh')
+        .replace(/(ص)/g, 's')
+        .replace(/(ض)/g, 'z')
+        .replace(/(ط)/g, 't')
+        .replace(/(ظ)/g, 'z')
+        .replace(/(ڤ)/g, 'f')
+        .replace(/(ع)/g, 'i')
+        .replace(/(غ)/g, 'gh')
+        .replace(/(ف)/g, 'f')
+        .replace(/(ق)/g, 'gh')
+        .replace(/(ک)/g, 'k')
+        .replace(/(گ)/g, 'g')
+        .replace(/(ل)/g, 'l')
+        .replace(/(م)/g, 'm')
+        .replace(/(ن)/g, 'n')
+        .replace(/(و)/g, 'v')
+        .replace(/(ه)/g, 'h')
+        .replace(/(ی)/g, 'i')
+        .replace(/(ي)/g, 'i')
+        .replace(/(ى)/g, 'i')
+        .replace(/(ك)/g, 'k')
+        .replace(/(ئ)/g, 'i')
+        .replace(/(ؤ)/g, 'v')
+        .replace(/(ة)/g, 'h')
+        .replace(/(هٔ)/g, 'h');
+      return result;
+    }
+
+  }
+
+  /**
+   *
+   * بازنويسي فرايند ذخيره سازي داده
+   *
+   * اضافه کردن تگ به ليست تگ ها
+   * @description
+   *  در اين متد دو فرايند قابل بازنويسي است
+   * فرايند افزودن تگ ها به ليست تگ ها
+   *فرايند ذخيره سازي داده و ارتباط با دي ال اس
+   *
+   * در صورت بازنويسي حتما خط ذيل نوشته شود
+   *
+   * this.logSystem.logClass.dlsTags = tags;
+   * @memberof  StatementsCodal
+   * @returns {void}
+   */
+  async saveData() {
+
+    let data = this.serviceData;
+    if (data) {
+      let defer = q.defer();
+      try {
+        async.eachSeries(data, async (item) => {
+
+          // save data to mongo
+          await BaseConfig.mongoDBO.collection('CodalStatements').updateOne(
+            {tracingNo: item.tracingNo.toString()},
+            {
+              $set:
+              item
+            },
+            {upsert: true});
+        }, (error) => {
+          if (error) {
+            console.log('===============================');
+            console.log('Error in innerSeries', error);
+            console.log('===============================');
+          }
+          else
+            defer.resolve();
+        });
+      }
+      catch (e) {
+        console.log(e);
+        defer.reject(e);
+      }
+      return defer.promise;
+    }
+
+  }
+}
+
+module.exports = StatementsCodal;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="codalStatementsLetterType.html">codalStatementsLetterType</a></li><li><a href="StatementsCodal.html">StatementsCodal</a></li></ul><h3>Classes</h3><ul><li><a href="codalStatementsLetterType.codalStatementsLetterType.html">codalStatementsLetterType</a></li><li><a href="ExampleService.AdviserSupplyService.html">AdviserSupplyService</a></li><li><a href="ExampleService.AuditingFirmsService.html">AuditingFirmsService</a></li><li><a href="ExampleService.CodalTemplateService.html">CodalTemplateService</a></li><li><a href="ExampleService.PublisherService.html">PublisherService</a></li><li><a href="StatementsCodal.StatementsCodal.html">StatementsCodal</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Sep 23 2019 14:22:32 GMT+0330 (Iran Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

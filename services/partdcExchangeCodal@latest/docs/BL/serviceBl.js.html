@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: StatementsBl.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: StatementsBl.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @namespace statmentsBL
+ */
+let {
+  BaseConfig,
+  DCManager,
+} = require('partdcFramework');
+let {
+  BaseBussinessLogic
+} = require('partServiceScaffoldModule');
+
+let q = require('../node_modules/q/q');
+let async = require('../node_modules/async/dist/async');
+
+let moment = require('moment-jalaali');
+
+let ServiceRegister = require('../serviceRegistration/serviceRegister');
+
+
+
+/**
+ * @class StatementsBl
+ * @extends {BaseBussinessLogic}
+ */
+class StatementsBl extends BaseBussinessLogic {
+
+
+  /**
+   *
+   * @description دریافت اطلاعیه های کدال در بازه درخواستی 
+   * @param {!object} requestData ووردی به سرویس به عنوان ساختار درخواست 
+   * @memberof StatementsBl
+   * @returns {void}
+   */
+  async statements(requestData) {
+    let serviceRegister = new ServiceRegister();
+    let startDate;
+    let endDate = new Date(); // defult end time : Today!
+    let dateList = [];
+    try {
+//find last record in data base
+      let Latest = (await BaseConfig.mongoDBO.collection('CodalStatements').find(
+        {}, {projection: {date: 1}}).sort({'date': -1}).limit(1).toArray());
+      if (Latest.length > 0) {
+        startDate = Object.values(Latest[0])[1];
+      }
+      // if no record find in database start date set : 13860708
+      else {
+        startDate = '13860708';
+      }
+      startDate = moment(startDate, 'jYYYYjMMjDD').toDate();
+      if (requestData.startDate >= requestData.endDate &amp;&amp; requestData.startDate) {
+        if (requestData.startDate) {
+          startDate = moment(requestData.startDate, 'jYYYYjMMjDD').toDate();
+        }
+        if (requestData.endDate) {
+          endDate = moment(requestData.endDate, 'jYYYYjMMjDD').toDate();
+        }
+      }
+//genarate list of dates between start date and end date 
+      dateList = this.generateDates(startDate, endDate);
+      async.eachSeries(dateList, async (date) => {
+        try {
+          let serviceModel = {};
+          let serviceClass;
+
+          serviceModel.year = date.year;
+          serviceModel.month = (date.month &lt; 10 ? '0' : '') + date.month;
+          serviceModel.day = (date.day &lt; 10 ? '0' : '') + date.day;
+          console.log('=============================');
+          console.log(`date ${date.year}/${date.month}/${date.day}   start`);
+          serviceModel.serviceName = 'statement';
+          serviceClass = serviceRegister.getServiceClass.bind(serviceRegister)(serviceModel);
+          let DC = await new DCManager(serviceModel, serviceClass).run();
+          let info = DC.codalError;
+          let statusCode = info ? (info.StatusCode ? info.StatusCode : info) : 200;
+
+          if (statusCode == 403) {
+            var todayEnd = new Date().setHours(23, 59, 59, 999);
+            BaseConfig.redisClient.set('Error403', new Date());
+            BaseConfig.redisClient.expireat('Error403', parseInt(todayEnd / 1000));
+            throw new Error('سرویس تا پایان روز جاری متوقف خواهد بود !!!');
+          }
+          else if (statusCode == 401 || statusCode == 404) {
+            BaseConfig.restConfig.tokenInfo.token = null;
+            throw new Error('توکن نا معتبر است !!!');
+          }
+          // await BaseConfig.redisClient.set('statementsArchiveDate', `${date.year+date.month+date.day}`);
+        }
+        catch (error) {
+          console.log('=============================');
+          console.log(error);
+          console.log('=============================');
+
+          BaseConfig.er.manage(error, 'سرویس مورد نظر در لیست سرویسهای ثبت شده وجود نداره ');
+        }
+      });
+
+
+    }
+    catch (error) {
+      BaseConfig.er.manage(error, 'فرآیند داده گیری ', 'فرایند داده گیری');
+    }
+
+  }
+
+
+  /**
+   *
+   *
+   * @param {!date} startDate
+   * @param {!date} endDate
+   * @returns {!Array} لیست روز ها بین تاریخ شروع و پایان به صورت تفکیک شده
+   * @memberof StatementsBl
+   */
+  generateDates(startDate, endDate) {
+    let queryParams = [];
+    let now = new Date(endDate);
+    for (let d = new Date(startDate); d &lt;= now; d.setDate(d.getDate() + 1)) {
+      let grgDateArray = moment(d).format('jYYYY/jMM/jDD').split('/');
+      // let takenDate = new Date(d).toLocaleDateString();
+      // let grgDateArray = takenDate.split('/');
+      // if (parseInt(grgDateArray[1]) &lt; 10) grgDateArray[1] = "0" + grgDateArray[1];
+      // if (parseInt(grgDateArray[0]) &lt; 10) grgDateArray[0] = "0" + grgDateArray[0];
+      // let date = grgDateArray[0].trim() + grgDateArray[1].trim() + grgDateArray[2].trim();
+      let date = {
+        year: parseInt(grgDateArray[0].trim()),
+        month: parseInt(grgDateArray[1].trim()),
+        day: parseInt(grgDateArray[2].trim()),
+      };
+      queryParams.push(date);
+    }
+    return queryParams;
+  }
+
+  /**
+   *
+   *@description دریافت انواع اطلاعیه ها از api سامانه کدال 
+   * @returns {void}
+   * @memberof StatementsBl
+   */
+  async getCodalStatementsLetterType() {
+    try {
+      let defer = q.defer();
+      let serviceRegister = new ServiceRegister();
+      let serviceClass;
+      let serviceModel = {};
+      try {
+        serviceModel.serviceName = 'codalStatementsLetterType';
+        serviceClass = serviceRegister.getServiceClass.bind(serviceRegister)(serviceModel);
+        let DC = await new DCManager(serviceModel, serviceClass).run();
+        let info = DC.codalError;
+        let statusCode = info ? (info.StatusCode ? info.StatusCode : info) : 200;
+
+        if (statusCode == 403) {
+          var todayEnd = new Date().setHours(23, 59, 59, 999);
+          BaseConfig.redisClient.set('Error403', new Date());
+          BaseConfig.redisClient.expireat('Error403', parseInt(todayEnd / 1000));
+          throw new Error('سرویس تا پایان روز جاری متوقف خواهد بود !!!');
+        }
+        else if (statusCode == 401 || statusCode == 404) {
+          BaseConfig.restConfig.tokenInfo.token = null;
+          throw new Error('توکن نا معتبر است !!!');
+        }
+      }
+      catch (e) {
+        console.log(e);
+        defer.reject(e);
+      }
+      return defer.promise;
+
+    }
+
+    catch (error) {
+      BaseConfig.er.manage(error, 'فرآیند داده گیری ', 'فرایند داده گیری');
+    }
+  }
+
+
+}
+
+module.exports = StatementsBl;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="statmentsBL.html">statmentsBL</a></li></ul><h3>Classes</h3><ul><li><a href="StatementsBl.html">StatementsBl</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Sep 23 2019 14:22:16 GMT+0330 (Iran Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

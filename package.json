@@ -1,0 +1,650 @@
+{
+  "moduleType": "project",
+  "name": "partdcExchangeCodal",
+  "description": "partdcExchangeCodal",
+  "main": "./index.js",
+  "version": "2.9.0",
+  "dependencies": {
+    "@types/moment-jalaali": "^0.7.4",
+    "ajv": "^8.8.2",
+    "async": "^2.6.1",
+    "async-redis": "^1.1.7",
+    "cheerio": "^1.0.0-rc.10",
+    "deasync": "^0.1.15",
+    "dotenv": "^8.0.0",
+    "file-system": "^2.2.2",
+    "fs": "0.0.1-security",
+    "moment": "^2.22.2",
+    "moment-jalaali": "^0.8.3",
+    "mongodb": "^3.1.10",
+    "partDataLayerInterface": "^2.1.8",
+    "partFramework": "^9.11.2",
+    "partLogger": "^5.6.0",
+    "partRedisInterface": "^4.6.0",
+    "partServiceScaffoldModule": "^4.10.3",
+    "partSessionManager": "^8.5.1",
+    "partUtilities": "^5.6.0",
+    "partdcFramework": "^7.4.3",
+    "partdcServiceManagementModule": "latest",
+    "q": "^1.5.1",
+    "request-promise": "^4.2.6",
+    "yauzl": "^2.10.0"
+  },
+  "releaseNote": {
+    "2.9.0": [
+      {
+        "title": "کاهش خطوط کد بخش استخراج",
+        "type": "improvement",
+        "description": "کوتاه کردن و بهبود کد های بخش استخراج داده"
+      },
+      {
+        "title": "انتقال کراد به دی سی",
+        "type": "improvement",
+        "description": "به دلیل داخلی بودن کراد از fdf به dc منتقل شد"
+      }
+    ],
+    "2.8.0": [
+      {
+        "title": "افزودن کلید جدید گزارش تفسیری",
+        "type": "improvement",
+        "description": "افزودن کلید های جدید گزارش تفسیری صفحه  1 و 2"
+      }
+    ],
+    "2.7.3": [
+      {
+        "title": "اصلاح فایل ریدمی",
+        "type": "improvement",
+        "description": "اصلاح فایل ریدمی به فرمت جدید"
+      }
+    ],
+    "2.7.2": [
+      {
+        "title": "رفع باگ های محاسبات",
+        "type": "bigFix",
+        "description": "رفع باگ های کوچک در محاسبات و درنظرگرفتن تلفیقی ها"
+      }
+    ],
+    "2.7.1": [
+      {
+        "title": "رفع باگ های کوچک",
+        "type": "bigFix",
+        "description": "رفع باگ های کوچک"
+      }
+    ],
+    "2.7.0": [
+      {
+        "title": "تغیرنوع حسابرسی شده به کل نماد",
+        "type": "improvement",
+        "description": "تغیرنوع حسابرسی شده به کل نماد"
+      }
+    ],
+    "2.6.5": [
+      {
+        "title": "بهبود محسابات و تغیر نوع خروجی",
+        "type": "improvement",
+        "description": "بهبود محسابات و تغیر نوع خروجی"
+      }
+    ],
+    "2.6.4": [
+      {
+        "title": "اعمال تغیر گزارش فعالیت بانک",
+        "type": "bigFix",
+        "description": "اعمال تغیر گزارش های فعالیت ماهانه بانک ها"
+      }
+    ],
+    "2.6.3": [
+      {
+        "title": "رفع باگ در محاسبات ایکوانت",
+        "type": "bigFix",
+        "description": "رفع باگ در محاسبات ایکوانت"
+      }
+    ],
+    "2.6.2": [
+      {
+        "title": "رفع باگ در محاسبات ایکوانت",
+        "type": "bigFix",
+        "description": "رفع باگ در محاسبات ایکوانت"
+      }
+    ],
+    "2.6.1": [
+      {
+        "title": "افزودن اخرین محاسبه ایکوانت",
+        "type": "feature",
+        "description": "افزودن اخرین محاسبه ایکوانت"
+      }
+    ],
+    "2.6.0": [
+      {
+        "title": "افزودن 3 نسبت جدید ایکوانت",
+        "type": "feature",
+        "description": "افزودن 3 نسبت جدید باری ایکوانت"
+      }
+    ],
+    "2.5.2": [
+      {
+        "title": "رفع خطا منطقی در ای پی اس",
+        "type": "bugFix",
+        "description": "رفع خطا منطقی تقسیم به 0 در محاسبات eps"
+      }
+    ],
+    "2.5.1": [
+      {
+        "title": "رفع باگ داده گیری گزارش تفسیری",
+        "type": "bugFix",
+        "description": "رفع باگ داده گیری گزارش تفسیری"
+      }
+    ],
+    "2.5.0": [
+      {
+        "title": "تغیر و رفع باگ استخراج داده",
+        "type": "improvement",
+        "description": "بهبود در استراخ فیلد ها از اطلاعیه ها"
+      }
+    ],
+    "2.4.2": [
+      {
+        "title": "تغیر فایل اتوماتیک سازی",
+        "type": "improvement",
+        "description": "جهت اپدیت اتوماتیک فایل install.sh تغیر نمود"
+      }
+    ],
+    "2.4.1": [
+      {
+        "title": "رفع خطا ذخیره سازی توکن",
+        "type": "bugFix",
+        "description": "رفع خطا در ذخیره سازی پیام ارور هنگام درخواست توکن"
+      },
+      {
+        "title": "تغیر مسیر ای ان وی",
+        "type": "improvement",
+        "description": "جهت اپدیت اتوماتیک مسیر .env تغیر نمود"
+      }
+    ],
+    "2.4.0": [
+      {
+        "title": "جداسازی فرایند توکن از فریمورک",
+        "type": "improvement",
+        "description": "فرایند دریافت توکن از فریمورک داده گیری جداشد"
+      },
+      {
+        "title": "حذف فایل اضافه",
+        "type": "improvement",
+        "description": "حذف فایل earningsPerShare از پروژه"
+      },
+      {
+        "title": "حذف کلید اضافه",
+        "type": "improvement",
+        "description": "کلید calculateNeed از کل پروژه حذف شد."
+      },
+      {
+        "title": "افزودن اسکریپت اپدیت پراد",
+        "type": "improvement",
+        "description": "اسکریپت updateStatementsProd جهت به روز کردن داده های پراد در مواقع خاص اضافه گردید"
+      }
+    ],
+    "2.3.1": [
+      {
+        "title": "رفع خطا در عدم دریافت تاریخ",
+        "type": "bugFix",
+        "description": "حذف اشتباه تاریخ شروع و پایان در extractInfoArchive"
+      }
+    ],
+    "2.3.0": [
+      {
+        "title": "ایجاد مسیر اپدیت نماد",
+        "type": "improvement",
+        "description": "با توجه به نیاز برای اپدیت lv علاوه بر دیتابیس به dc منتقل شد"
+      },
+      {
+        "title": "بهبود سرویس های ارشیوی",
+        "type": "improvement",
+        "description": "در همه ی api های ارشیوی تغیر lv حذف شدند"
+      },
+      {
+        "title": "تغیر سرویس ارشیو محاسبات",
+        "type": "improvement",
+        "description": "از حالت مبتنی بر اطلاعیه ها به حالت مبتنی بر نماد ها تغیر یافت.هم چنین باید در ورودی نوع محاسبه و فیلتر اطلاعیه مشخص گردد"
+      },
+      {
+        "title": "بهبود در ارشیو محتوا",
+        "type": "improvement",
+        "description": "در این سرویس امکان ست کردن فیلتر ها برای اطلاعیه های مربوط به یک نماد نیز افزوده گردید"
+      }
+    ],
+    "2.2.1": [
+      {
+        "title": "هندل کردن خطاهای منطقی محاسبات",
+        "type": "bugFix",
+        "description": "هندل کردن خطا های منظقی - خطاهای ناشی از نبود داده خام در محاسبات"
+      }
+    ],
+    "2.2.0": [
+      {
+        "title": "اضافه شدن محاسبات جدید",
+        "type": "feature",
+        "description": "add EPS in calculating stocks"
+      },
+      {
+        "title": "رفع خطای سرویس سهام",
+        "type": "bugFix",
+        "description": "bug in getStockList-save in Lv fixed"
+      },
+      {
+        "title": "تغیر محاسبات مربوط به سودزیان",
+        "type": "improvement",
+        "description": "change ROA,ROE calculating"
+      }
+    ],
+    "2.1.0": [
+      {
+        "title": "تغیرات و بهبود عملکرد",
+        "type": "improvement",
+        "description": "حذف api های اضافه و بهبود فراخوانی محاسبات"
+      },
+      {
+        "title": "اضافه شدن حالت جدید گزارش تفسیری",
+        "type": "improvement",
+        "description": "add newType in interpretativeReportSummary"
+      }
+    ],
+    "2.0.1": [
+      {
+        "title": "رفع خطای استخراج داده ارشیو",
+        "type": "feature",
+        "description": "fix bug in calculating in extractInfoArchive"
+      }
+    ],
+    "2.0.0": [
+      {
+        "title": "نسخه جدید کدال",
+        "type": "feature",
+        "description": "publish newStructure of project"
+      }
+    ],
+    "1.17.5": [
+      {
+        "title": "اصلاح نام فایل اتوماتیک سازی",
+        "type": "improvement",
+        "description": "rename install.sh file"
+      }
+    ],
+    "1.17.4": [
+      {
+        "title": "حذف سرویس کرول و پاپتیر",
+        "type": "improvement",
+        "description": "remove puppeteer service-crawlStatementsSearchItems"
+      }
+    ],
+    "1.17.3": [
+      {
+        "title": "اضافه شدن فایل اتوماتیک سازی",
+        "type": "improvement",
+        "description": "add install.sh to project root"
+      }
+    ],
+    "1.17.2": [
+      {
+        "title": "تغیر خروجی مانیتورینگ",
+        "type": "improvement",
+        "description": "تغیر فیلد ها و نوع خروجی سرویس مانیتورینگ"
+      }
+    ],
+    "1.17.1": [
+      {
+        "title": "رفع خطا",
+        "type": "bugFix",
+        "description": "رفع خطا در نال شدن خروجی"
+      }
+    ],
+    "1.17.0": [
+      {
+        "title": "افزودن نسبت جدید",
+        "type": "feature",
+        "description": "نسیت ROA اضافه شد"
+      }
+    ],
+    "1.16.1": [
+      {
+        "title": "رفع خطا",
+        "type": "bugFix",
+        "description": "رفع اشتباه در تایپ کردن مقدار period"
+      }
+    ],
+    "1.16.0": [
+      {
+        "title": "افزودن نسبت جدید",
+        "type": "feature",
+        "description": "نسیت ROE اضافه شد"
+      },
+      {
+        "title": "کلاس بندی در انجام محاسبات",
+        "type": "improvement",
+        "description": "ایجاد روابط پدر و فرزندی در محاسبات جهت حذف تکرار"
+      }
+    ],
+    "1.15.0": [
+      {
+        "title": "بهینه سازی و بهبود در محاسبات",
+        "type": "improvement",
+        "description": "بهبود در کوئری ها و مپ کردن نماد ها در محاسبات"
+      },
+      {
+        "title": "بهبود محاسبات درآمدعملیاتی",
+        "type": "improvement",
+        "description": "حذف null ها با گرفتن داده درامد عملیاتی دوره و سال قبل از اخرین اطلاعیه"
+      }
+    ],
+    "1.14.3": [
+      {
+        "title": "رفع باگ در محاسبات",
+        "type": "bugFix",
+        "description": "رفع باگ در ضرب 1 میلیون در مخرج محسبات p/b"
+      },
+      {
+        "title": "بهبود در پیادهسازی لیست نماد",
+        "type": "improvement",
+        "description": "یکسان سازی تابع مپ کردن لیست نماد ها و مشخص نمودن نماد های مچ نشده"
+      }
+    ],
+    "1.14.2": [
+      {
+        "title": "رفع کانفلیکت در پراد",
+        "type": "bugFix",
+        "description": "رفع کانفلیکت های بوجود امده در پراد"
+      }
+    ],
+    "1.14.1": [
+      {
+        "title": "بهبود در فراخوانی توابع مپ",
+        "type": "improvement",
+        "description": "call map apis after getStockList and getFundList"
+      }
+    ],
+    "1.14.0": [
+      {
+        "title": "بهبود در عملیات لیست نماد",
+        "type": "improvement",
+        "description": "بازگشت به فراخوانی لیست نماداز api سهام"
+      },
+      {
+        "title": "یکسان سازی برخی جداول",
+        "type": "improvement",
+        "description": "کاهش و حذف جداول اضافه و بهبود کد"
+      }
+    ],
+    "1.13.3": [
+      {
+        "title": "رفع باگ در جزئیات اطلاعیه ها",
+        "type": "bugFix",
+        "description": "رفع باگ در گرفتن لیست نماد ها"
+      }
+    ],
+    "1.13.2": [
+      {
+        "title": "رفع باگ در محاسبات",
+        "type": "bugFix",
+        "description": "رفع باگ در محاسبات p/s, p/b , eps"
+      },
+      {
+        "title": "به روز رسانی انجام محاسبات",
+        "type": "improvement",
+        "description": "عدم درج محاسبات برای نماد ها بدون ارزش بازار"
+      }
+    ],
+    "1.13.1": [
+      {
+        "title": "رفع مشکلات نماد ها",
+        "type": "bugFix",
+        "description": "رفع مشکلات در لیست نماد ها و بهبود آن"
+      }
+    ],
+    "1.13.0": [
+      {
+        "title": "افزودن تلفیقی ها به محاسبات",
+        "type": "improvement",
+        "description": "اضافه شدن حالت تلفیقی به eps,p/b و p/s و رفع خطاها"
+      }
+    ],
+    "1.12.1": [
+      {
+        "title": "رفع باگ های محاسبات p/s , p/b",
+        "type": "bugFix",
+        "description": "improve bugs in calculating p/s & p/b"
+      },
+      {
+        "title": "افزودن حالت تلفیقی ای پی اس",
+        "type": "improvement",
+        "description": "اضافه شدن اطلاعیه های از نوع تلفیقی در کوئری تگ EPS"
+      }
+    ],
+    "1.12.0": [
+      {
+        "title": "اضافه شدن صندوق ها به کدال",
+        "type": "feature",
+        "description": "Map fundIds with symbols in codal"
+      }
+    ],
+    "1.11.0": [
+      {
+        "title": "اضافه کردن فیلتر زمان",
+        "type": "improvement",
+        "description": "'Filter By date In InstrumentService"
+      },
+      {
+        "title": "اضافه کردن سرویس",
+        "type": "improvement",
+        "description": "add MarketValue Service"
+      }
+    ],
+    "1.10.0": [
+      {
+        "title": "تغیرات ساختاری پروژه",
+        "type": "improvement",
+        "description": "changes in filing and structure"
+      },
+      {
+        "title": "اضافه شدن محاسبات جدید",
+        "type": "feature",
+        "description": "add PToS & PToB calculating"
+      },
+      {
+        "title": "تکمیل روند لیست نماد",
+        "type": "feature",
+        "description": "اضافه شدن سرویس های بورسی برای ایجاد لیست نهایی نماد های مشترک با پروژه سهام"
+      }
+    ],
+    "1.9.1": [
+      {
+        "title": "افزودن نام سهم و اخرین اپدیت",
+        "type": "improvement",
+        "description": "add stockName and lastUpdateTime to EPS"
+      }
+    ],
+    "1.9.0": [
+      {
+        "title": "بهبود عملکرد",
+        "type": "feature",
+        "description": "add EPS calling after getInfoService - ایجاد حالت فراخوانی تابع محاسبه پس از پایان فرایند دریافت محتوای اطلاعیه"
+      }
+    ],
+    "1.8.1": [
+      {
+        "title": "رفع باگ در گرفتن جزییات",
+        "type": "bugFix",
+        "description": "add monitoring routes "
+      }
+    ],
+    "1.8.0": [
+      {
+        "title": "افزودن مانیتورینگ",
+        "type": "feature",
+        "description": "add monitoring routes "
+      }
+    ],
+    "1.7.2": [
+      {
+        "title": "افزودن لاگر",
+        "type": "improvement",
+        "description": "add Logger In InterimStatements"
+      }
+    ],
+    "1.7.1": [
+      {
+        "title": "افزودن داده سود و زیان",
+        "type": "bugFix",
+        "description": "bug in interimStatements"
+      },
+      {
+        "title": "افزودن ایسلینت به پروژه",
+        "type": "bugFix",
+        "description": "fix bugs eslint in project"
+      }
+    ],
+    "1.7.0": [
+      {
+        "type": "feature",
+        "description": "add EPS calculation - گرفتن داده های سود و زیان خالص هر سهم از اطلاعیه ها"
+      },
+      {
+        "type": "improve",
+        "description": "add eslint to project"
+      }
+    ],
+    "1.6.11": [
+      {
+        "type": "improve",
+        "description": "add redis-mongo password"
+      }
+    ],
+    "1.6.10": [
+      {
+        "type": "improve",
+        "description": "add inline comment"
+      }
+    ],
+    "1.6.9": [
+      {
+        "type": "improve",
+        "description": "add RecieveStatementsInfoLetterTypeList table"
+      }
+    ],
+    "1.6.8": [
+      {
+        "type": "improve",
+        "description": "add RecieveStatementsInfoLetterTypeList table"
+      }
+    ],
+    "1.6.7": [
+      {
+        "type": "improve",
+        "description": "add RecieveStatementsInfoLetterTypeList table"
+      }
+    ],
+    "1.6.6": [
+      {
+        "type": "improve",
+        "description": "add removeMongoDuplicate script"
+      }
+    ],
+    "1.6.5": [
+      {
+        "type": "improve",
+        "description": "add totalItem to getMapIDs API"
+      }
+    ],
+    "1.6.4": [
+      {
+        "type": "improve",
+        "description": "add totalItem in getMapIDs"
+      }
+    ],
+    "1.6.3": [
+      {
+        "type": "improve",
+        "description": "add pageNumber and pageSize in getMapIDs"
+      }
+    ],
+    "1.6.2": [
+      {
+        "type": "bug",
+        "description": "bug in map table"
+      }
+    ],
+    "1.6.1": [
+      {
+        "type": "bug",
+        "description": "bug in package.jsom"
+      }
+    ],
+    "1.6.0": [
+      {
+        "type": "improve",
+        "description": "add remove & add & edit & get api for map company id table"
+      }
+    ],
+    "1.5.0": [
+      {
+        "type": "improve",
+        "description": "add insert Info From Archive API"
+      }
+    ],
+    "1.4.0": [
+      {
+        "type": "improve",
+        "description": "add get searchItems"
+      }
+    ],
+    "1.3.0": [
+      {
+        "type": "improve",
+        "description": "get statements info api"
+      }
+    ],
+    "1.2.4": [
+      {
+        "type": "bugfix",
+        "description": "fix jsdoc"
+      }
+    ],
+    "1.2.3": [
+      {
+        "type": "bugfix",
+        "description": "fix eslint"
+      }
+    ],
+    "1.2.2": [
+      {
+        "type": "bugfix",
+        "description": "رفع باگ در بازگشت خطا از سامانه کودال"
+      }
+    ],
+    "1.2.1": [
+      {
+        "type": "bugfix",
+        "description": "رفع باگ در ذخیره سازی codalStatementsLetterType"
+      }
+    ],
+    "1.2.0": [
+      {
+        "type": "feature",
+        "description": "اضافه شدن امکان توقف سرویس در صورت پایان تعداد مجاز درخواست روزانه و پایان اعتبار توکن"
+      }
+    ],
+    "1.1.0": [
+      {
+        "type": "feature",
+        "description": "اضافه شدن کلید expire time در ردیس "
+      }
+    ],
+    "1.0.0": [
+      {
+        "type": "feature",
+        "description": "انتشار نسخه اول سرویس دریافت اطلاعیه های کدال"
+      }
+    ]
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "underscore": "^1.11.0"
+  }
+}
